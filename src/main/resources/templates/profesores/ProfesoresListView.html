@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Profesores</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
+        header { background-color: #1f4e79; color: white; padding: 20px; text-align: center; }
+        .contenedor { width: 90%; max-width: 1100px; margin: 30px auto; }
+        .barra-acciones { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        thead { background-color: #1f4e79; color: white; }
+        th, td { padding: 14px 20px; text-align: left; }
+        tbody tr:nth-child(even) { background-color: #f0f4f8; }
+        tbody tr:hover { background-color: #d6e4f0; }
+        .vacio { text-align: center; padding: 20px; color: #888; }
+        .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #1f4e79; color: white; }
+        .btn-primary:hover { background-color: #163d60; }
+        .btn-icon { background: none; border: none; cursor: pointer; font-size: 18px; padding: 4px; line-height: 1; }
+        .btn-icon:hover { opacity: 0.7; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Listado de Profesores</h1>
+</header>
+
+<div class="contenedor">
+    <div class="barra-acciones">
+        <a th:href="@{/dashboard}" class="btn btn-primary">← Dashboard</a>
+        <a th:href="@{/profesores/nuevo}" class="btn btn-primary">+ Añadir profesor</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Departamento</th>
+                <th>Nº Cursos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(profesores)}">
+                <td colspan="6" class="vacio">No hay profesores registrados.</td>
+            </tr>
+            <tr th:each="profesor : ${profesores}">
+                <td th:text="${profesor.id}"></td>
+                <td th:text="${profesor.nombre}"></td>
+                <td th:text="${profesor.email}"></td>
+                <td th:text="${profesor.departamento != null ? profesor.departamento : '—'}"></td>
+                <td th:text="${#lists.size(profesor.cursos)}"></td>
+                <td>
+                    <a th:href="@{/profesores/{id}/editar(id=${profesor.id})}" class="btn-icon" title="Editar">✏️</a>
+                    <form th:action="@{/profesores/{id}/eliminar(id=${profesor.id})}" method="post"
+                          style="display:inline"
+                          onsubmit="return confirm('¿Eliminar este profesor?')">
+                        <button type="submit" class="btn-icon" title="Eliminar">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>Aplicación Spring Boot + Supabase</footer>
+</body>
+</html>

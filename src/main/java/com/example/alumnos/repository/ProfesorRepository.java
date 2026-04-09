@@ -13,4 +13,5 @@ public interface ProfesorRepository extends JpaRepository<Profesor, Long> {
 
     @RestResource(path = "por-email", rel = "por-email")
     Optional<Profesor> findByEmail(@Param("email") String email);
+
 }

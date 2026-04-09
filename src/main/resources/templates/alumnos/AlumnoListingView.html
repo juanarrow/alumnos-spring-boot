@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Alumnos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
+        header { background-color: #1f4e79; color: white; padding: 20px; text-align: center; }
+        .contenedor { width: 90%; max-width: 1100px; margin: 30px auto; }
+        .barra-acciones { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        thead { background-color: #1f4e79; color: white; }
+        th, td { padding: 14px 20px; text-align: left; vertical-align: middle; }
+        tbody tr:nth-child(even) { background-color: #f0f4f8; }
+        tbody tr:hover { background-color: #d6e4f0; }
+        .vacio { text-align: center; padding: 20px; color: #888; }
+        .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #1f4e79; color: white; }
+        .btn-primary:hover { background-color: #163d60; }
+        .btn-icon { background: none; border: none; cursor: pointer; font-size: 18px; padding: 4px; line-height: 1; }
+        .btn-icon:hover { opacity: 0.7; }
+        .foto-thumb { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #1f4e79; }
+        .foto-placeholder { width: 44px; height: 44px; border-radius: 50%; background-color: #cdd8e3;
+                            display: inline-flex; align-items: center; justify-content: center;
+                            font-size: 20px; color: #1f4e79; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Listado de Alumnos</h1>
+</header>
+
+<div class="contenedor">
+    <div class="barra-acciones">
+        <a th:href="@{/dashboard}" class="btn btn-primary">← Dashboard</a>
+        <a th:href="@{/alumnos/nuevo}" class="btn btn-primary">+ Añadir alumno</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Fecha Nac.</th>
+                <th>Curso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(alumnos)}">
+                <td colspan="8" class="vacio">No hay alumnos registrados.</td>
+            </tr>
+            <tr th:each="alumno : ${alumnos}">
+                <td>
+                    <img th:if="${alumno.fotoUrl != null}" th:src="${alumno.fotoUrl}" class="foto-thumb" alt="Foto"/>
+                    <span th:if="${alumno.fotoUrl == null}" class="foto-placeholder">👤</span>
+                </td>
+                <td th:text="${alumno.id}"></td>
+                <td th:text="${alumno.nombre}"></td>
+                <td th:text="${alumno.apellidos}"></td>
+                <td th:text="${alumno.email}"></td>
+                <td th:text="${alumno.fechaNacimiento != null ? alumno.fechaNacimiento : '—'}"></td>
+                <td th:text="${alumno.curso != null ? alumno.curso.nombre : '—'}"></td>
+                <td>
+                    <a th:href="@{/alumnos/{id}/editar(id=${alumno.id})}" class="btn-icon" title="Editar">✏️</a>
+                    <form th:action="@{/alumnos/{id}/eliminar(id=${alumno.id})}" method="post"
+                          style="display:inline"
+                          onsubmit="return confirm('¿Eliminar este alumno?')">
+                        <button type="submit" class="btn-icon" title="Eliminar">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>Aplicación Spring Boot + Supabase</footer>
+</body>
+</html>

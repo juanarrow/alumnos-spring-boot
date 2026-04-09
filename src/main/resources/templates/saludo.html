@@ -46,12 +46,6 @@
             color: #333;
         }
 
-        .tarjeta:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-            transition: all 0.2s ease;
-        }
-
         .numero {
             font-size: 42px;
             margin-top: 15px;
@@ -84,26 +78,10 @@
 
 <div class="contenedor">
     <div class="tarjetas">
-        <a th:href="@{/alumnos}" class="tarjeta" style="text-decoration:none; color:inherit;">
-            <h2>Alumnos</h2>
-            <div class="numero" th:text="${totalAlumnos}">0</div>
-        </a>
-
-        <a th:href="@{/cursos}" class="tarjeta" style="text-decoration:none; color:inherit;">
-            <h2>Cursos</h2>
-            <div class="numero" th:text="${totalCursos}">0</div>
-        </a>
-
-        <a th:href="@{/profesores}" class="tarjeta" style="text-decoration:none; color:inherit;">
-            <h2>Profesores</h2>
-            <div class="numero" th:text="${totalProfesores}">0</div>
-        </a>
-    </div>
-
-    <div class="seccion">
-        <h2>Información</h2>
-        <p>Esta página muestra un resumen de los datos almacenados en la base de datos Supabase.</p>
-        <p>Los valores se cargan dinámicamente desde Spring Boot usando Thymeleaf.</p>
+        <div class="tarjeta">
+            <h2>Saludo</h2>
+            <div class="numero" th:text="${mensaje}">0</div>
+        </div>
     </div>
 </div>
 

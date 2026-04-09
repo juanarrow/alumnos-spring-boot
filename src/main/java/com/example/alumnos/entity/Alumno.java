@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "alumnos", schema = "public")
@@ -32,9 +33,13 @@ public class Alumno {
     @Column(nullable = false, length = 150)
     private String email;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
@@ -46,6 +51,10 @@ public class Alumno {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -78,6 +87,14 @@ public class Alumno {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getFotoUrl() {
+        return fotoUrl;
+    }
+
+    public void setFotoUrl(String fotoUrl) {
+        this.fotoUrl = fotoUrl;
     }
 
     public Curso getCurso() {

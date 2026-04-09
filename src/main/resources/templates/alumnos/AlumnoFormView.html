@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${accion} + ' alumno'">Formulario Alumno</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
+        header { background-color: #1f4e79; color: white; padding: 20px; text-align: center; }
+        .contenedor { width: 90%; max-width: 600px; margin: 40px auto; }
+        .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; }
+        input[type="text"], input[type="email"], input[type="date"], select {
+            width: 100%; padding: 10px 12px; border: 1px solid #ccc;
+            border-radius: 6px; font-size: 15px; box-sizing: border-box;
+        }
+        input:focus, select:focus { outline: none; border-color: #1f4e79; }
+        .error { color: #c0392b; font-size: 13px; margin-top: 4px; }
+        .acciones { display: flex; justify-content: space-between; margin-top: 24px; }
+        .btn { display: inline-block; padding: 10px 20px; border-radius: 6px;
+               text-decoration: none; font-size: 15px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #1f4e79; color: white; }
+        .btn-primary:hover { background-color: #163d60; }
+        .btn-secondary { background-color: #aaa; color: white; }
+        .btn-secondary:hover { background-color: #888; }
+        .foto-actual { width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+                       border: 3px solid #1f4e79; margin-bottom: 10px; display: block; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 th:text="${accion} + ' alumno'">Formulario Alumno</h1>
+</header>
+
+<div class="contenedor">
+    <div class="card">
+
+        <form th:action="${alumno.id != null}
+                          ? @{/alumnos/{id}/editar(id=${alumno.id})}
+                          : @{/alumnos/nuevo}"
+              th:object="${alumno}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre"/>
+                <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" th:field="*{apellidos}" placeholder="Apellidos"/>
+                <span class="error" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="correo@ejemplo.com"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaNacimiento">Fecha de nacimiento <span style="color:#aaa; font-weight:normal">(opcional)</span></label>
+                <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}"/>
+                <span class="error" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="curso">Curso <span style="color:#aaa; font-weight:normal">(opcional)</span></label>
+                <select id="curso" th:field="*{curso.id}">
+                    <option value="">— Sin curso —</option>
+                    <option th:each="c : ${cursos}"
+                            th:value="${c.id}"
+                            th:text="${c.nombre + ' (' + c.codigo + ')'}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="foto">Foto <span style="color:#aaa; font-weight:normal">(opcional)</span></label>
+                <img th:if="${alumno.fotoUrl != null}" th:src="${alumno.fotoUrl}" class="foto-actual" alt="Foto actual"/>
+                <input type="file" id="foto" name="foto" accept="image/*"/>
+            </div>
+
+            <div class="acciones">
+                <a th:href="@{/alumnos}" class="btn btn-secondary">← Cancelar</a>
+                <button type="submit" class="btn btn-primary" th:text="${accion} + ' alumno'">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer>Aplicación Spring Boot + Supabase</footer>
+</body>
+</html>
