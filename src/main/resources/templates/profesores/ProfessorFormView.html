@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${accion} + ' profesor'">Formulario Profesor</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
+        header { background-color: #1f4e79; color: white; padding: 20px; text-align: center; }
+        .contenedor { width: 90%; max-width: 600px; margin: 40px auto; }
+        .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; }
+        input[type="text"], input[type="email"] {
+            width: 100%; padding: 10px 12px; border: 1px solid #ccc;
+            border-radius: 6px; font-size: 15px; box-sizing: border-box;
+        }
+        input[type="text"]:focus, input[type="email"]:focus {
+            outline: none; border-color: #1f4e79;
+        }
+        .error { color: #c0392b; font-size: 13px; margin-top: 4px; }
+        .acciones { display: flex; justify-content: space-between; margin-top: 24px; }
+        .btn { display: inline-block; padding: 10px 20px; border-radius: 6px;
+               text-decoration: none; font-size: 15px; border: none; cursor: pointer; }
+        .btn-primary { background-color: #1f4e79; color: white; }
+        .btn-primary:hover { background-color: #163d60; }
+        .btn-secondary { background-color: #aaa; color: white; }
+        .btn-secondary:hover { background-color: #888; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 th:text="${accion} + ' profesor'">Formulario Profesor</h1>
+</header>
+
+<div class="contenedor">
+    <div class="card">
+
+        <!-- Si es edición, el action apunta a /{id}/editar; si es nuevo, a /nuevo -->
+        <form th:action="${profesor.id != null}
+                          ? @{/profesores/{id}/editar(id=${profesor.id})}
+                          : @{/profesores/nuevo}"
+              th:object="${profesor}"
+              method="post">
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre completo"/>
+                <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="correo@ejemplo.com"/>
+                <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="departamento">Departamento <span style="color:#aaa; font-weight:normal">(opcional)</span></label>
+                <input type="text" id="departamento" th:field="*{departamento}" placeholder="Ej: Matemáticas"/>
+                <span class="error" th:if="${#fields.hasErrors('departamento')}" th:errors="*{departamento}"></span>
+            </div>
+
+            <div class="acciones">
+                <a th:href="@{/profesores}" class="btn btn-secondary">← Cancelar</a>
+                <button type="submit" class="btn btn-primary" th:text="${accion} + ' profesor'">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<footer>Aplicación Spring Boot + Supabase</footer>
+</body>
+</html>
