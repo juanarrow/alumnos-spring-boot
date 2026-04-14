@@ -26,7 +26,7 @@ public class DashboardWebController {
     public String verDashboard(Model model) {
         model.addAttribute("totalAlumnos", alumnoRepository.count());
         model.addAttribute("totalCursos", cursoRepository.count());
-        model.addAttribute("totalProfesores", profesorRepository.count());
+        model.addAttribute("totalProfesores", profesorRepository.findByEmail("jgargom214@g.educaand.es").stream().count());
         return "dashboard";
     }
 }
